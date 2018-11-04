@@ -1,0 +1,45 @@
+package project1;
+
+public class SaleItem implements Comparable<SaleItem>{
+
+	int productId;
+	int units;
+	
+	SaleItem(int ProductId, int Units) {
+		productId = ProductId;
+		units = Units;
+		
+	}
+	
+	SaleItem(int[] temp){
+		productId = temp[1];
+		units = temp[2];
+	}
+	
+	public void add(int newUnits){
+	
+		units = units + newUnits;
+		
+	}
+	
+	public String toString(){
+		
+		
+		return productId + "," + units + ","; 
+	}
+	
+	@Override
+	public int compareTo(SaleItem arg0) {
+		
+		if(this.productId == arg0.productId)
+		
+		return 0;
+		
+		if(this.productId < arg0.productId)
+			
+			return -1;
+		else
+			return 1;
+	}
+
+}

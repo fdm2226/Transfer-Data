@@ -1,0 +1,116 @@
+package project1;
+
+import java.io.BufferedReader; //scanner for files
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader; //access for file
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Arrays;
+import java.io.PrintWriter;
+
+
+public class dataExtraction {
+
+	public static void main(String args[]) throws Exception{
+		
+		
+			ArrayList<int[]> intialList = read();
+			SaleItem[] organizer = organize(intialList);
+			printCSV(organizer);
+			
+			
+	
+}
+	
+	
+	public static ArrayList<int[]> read() throws NumberFormatException, IOException {
+		
+		String file = "C:/Users/Owner/Documents/Copy_of_Sales_Data-1.csv";
+		BufferedReader reader = null;
+		String line = "";
+		String fileSplit = ",";
+		boolean firstRound = true;
+		ArrayList<int[]> myArrayList = new ArrayList<int[]>();
+
+		
+			reader = new BufferedReader(new FileReader(file));
+			
+			while ((line = reader.readLine()) != null) {
+				 
+		        // use comma as separator
+			String[] seperator = line.split(fileSplit);
+			
+			
+			System.out.println("[Product ID= " + seperator[1] 
+                    + " , Unit=" + seperator[2] + "]");
+			int[] intConvert = new int[3];
+
+			if(firstRound){
+				firstRound = false;
+				continue;
+			}else if(!firstRound) {
+				for(int x=1; x<=2; x++){
+					intConvert[x] = Integer.parseInt(seperator[x]);
+
+				}		
+			}
+			
+			myArrayList.add(intConvert);
+			
+		
+			}
+	
+			return myArrayList;
+	}
+	
+public static SaleItem[] organize(ArrayList<int[]> intialList) {
+		
+	int cItem = 0;
+		SaleItem[] saleArray = new SaleItem[intialList.size()];
+		
+		for(int x = 0; x < intialList.size(); x++){
+			SaleItem temp = new SaleItem(intialList.get(x));
+			boolean find = false;
+			for(int i = 0; i < cItem; i++){
+				if(temp.compareTo(saleArray[i])== 0){
+					find = true;
+					saleArray[i].add(temp.units);
+					break;
+				}
+			}
+			
+			if(!find){
+				saleArray[cItem++] = temp;
+			}
+		}
+		
+		SaleItem[] finalList = Arrays.copyOf(saleArray, cItem);
+
+		Arrays.sort(finalList);
+		
+		return finalList;
+		
+	}
+
+public static void printCSV(SaleItem[] organizer) throws FileNotFoundException{
+	
+	PrintWriter finalOutput = new PrintWriter("Total sales data.csv");
+	finalOutput.println("Product ID,Units,");
+	for(int v = 0 ; v < organizer.length; v++){
+		finalOutput.println(organizer[v]);
+	}
+	
+	finalOutput.flush();
+	finalOutput.close();
+	
+}
+	
+
+	
+	
+}
+	
+	
+
